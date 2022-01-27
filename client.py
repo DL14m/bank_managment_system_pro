@@ -8,6 +8,7 @@ class Cliente:
     def __repr__(self):
         return f"Client:('Name:{self.__nome_cliente}, Phone:{self.__numero_telefono}')"
 
+
     # Getter with methods
     @property
     def nome_cliente(self):
@@ -16,6 +17,7 @@ class Cliente:
     @nome_cliente.setter
     def nome_cliente(self,nome_cliente):
         self.__nome_cliente = nome_cliente
+
 
     # Getter
     def get_numero_telefono(self):

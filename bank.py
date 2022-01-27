@@ -10,6 +10,7 @@ class Banca:
     def __repr__(self):
         return f"Bank:('Name:{self.__nome_banca}, Client:{self.__clienti}, Count:{self.__conti_correnti}')"
 
+
     # Getter with methods
     @property
     def nome_banca(self):
