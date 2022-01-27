@@ -12,3 +12,4 @@ account = Conto('00001',cliente1,'12','12')
 print(account)
 print(banca)
 print(cliente1)
+ 
