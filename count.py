@@ -1,11 +1,14 @@
 
+from datetime import datetime
 from logging import exception
+from sqlite3 import Timestamp
 
 class Conto:
 
     __operazioni_effettuate = []
+    tassa_prelievo=1.00
 
-    def __init__(self,numero_conto,cliente,bilancio_conto,saldo=0):
+    def __init__(self, numero_conto, cliente, bilancio_conto, saldo=0):
         self.__numero_conto = numero_conto
         self.__cliente = cliente
         self.__bilancio_conto = bilancio_conto
@@ -72,9 +75,35 @@ class Conto:
 
 
     def take_money (self, value):
-        value = int(input ('Enter how much money you want to withdraw by decreasing the balance'))
         if value < self.__saldo:
-            self.__saldo -= value
+            self.__saldo = (self.__saldo - value) - self.tassa_prelievo
             print(f'Withdrawal was successful and the balance is {self.__saldo}€')
         else:
             print(f'Error, the balance is too low for withdraw that cipher, the balance is {self.__saldo}€')
+
+
+class ContoSpecial (Conto):
+
+    data_inizio_debito = None
+    tassa_prelievo = 2.00
+
+    def __init__(self, numero_conto, cliente, bilancio_conto, saldo=0):
+        super().__init__(numero_conto, cliente, bilancio_conto, saldo)
+
+
+    def take_money (self, value):
+        self.__saldo = (self.__saldo - value) - self.tassa_prelievo
+        print(f'Withdrawal was successful and the balance is {self.__saldo}€')
+        
+        if self.__saldo < 0 and self.data_inizio_debito == None:
+                self.data_inizio_debito = datetime.now()
+                print(f'ATTENTION: Your balance has gone negative!')        
+
+
+    def pay_money(self, value): 
+        super().pay_money(value)
+        if self.__saldo > 0 and self.data_inizio_debito != None:
+            self.data_inizio_debito = datetime.now()
+            print(f'CONGRATS: Your balance has gone positive!')   
+     
+    
