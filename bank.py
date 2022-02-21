@@ -21,12 +21,10 @@ class Banca:
     @nome_banca.setter
     def nome_banca(self,nome_banca):
         self.__nome_banca = nome_banca
-    
 
     @property
     def id(self): 
         return self.__id
-
 
     @property
     def clienti(self):
@@ -35,14 +33,12 @@ class Banca:
     def clienti(self,clienti):
         self.__clienti = clienti
 
-
     @property
     def conti_correnti(self):
         return self.__conti_correnti
     @conti_correnti.setter
     def conti_correnti(self,conti_correnti):
         self.__conti_correnti = conti_correnti
-
     
     @property
     def nazione(self):
@@ -52,9 +48,8 @@ class Banca:
         self.__nazione = nazione
 
 
-
     def __repr__(self):
-        return f"Bank:('Name:{self.__nome_banca}, Nation: {self.__nazione}, Client {str(len(self.clienti))}, Count: {str(len(self.conti_correnti))}"
+        return f"Bank:('Name:{self.__nome_banca}, Nation: {self.__nazione}, Total Client: {str(len(self.clienti))}, Total Count: {str(len(self.conti_correnti))}"
     
     
     def open_count(self, conto):
@@ -95,4 +90,3 @@ class Banca:
         else: 
             self.clienti.pop(pos)
             print("Count" + str(id) + " successfully removed")
-

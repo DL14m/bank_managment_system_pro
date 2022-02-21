@@ -65,45 +65,57 @@ class Conto:
 
     
     def __repr__(self):
-        return f"Count:('Number of Count:{self.__numero_conto}, {self.__cliente}, Operation:{self.__operazioni_effettuate}, Balance:{self.__saldo}, Account Budget:{self.__bilancio_conto}')"
+        return f"Count:('Number of Count:{self.numero_conto}, {self.cliente}, Operation:{self.operazioni_effettuate}, Balance:{self.saldo}, Account Budget:{self.bilancio_conto}')"
 
 
     def pay_money(self, value): 
         value = int(input ('Enter how much money you want to deposit to increase the balance'))
-        self.__saldo += value
-        print(f'Payment was successful and the balance is {self.__saldo}€')
+        self.saldo += value
+        print(f'Payment was successful and the balance is {self.saldo}€')
 
 
     def take_money (self, value):
-        if value < self.__saldo:
-            self.__saldo = (self.__saldo - value) - self.tassa_prelievo
-            print(f'Withdrawal was successful and the balance is {self.__saldo}€')
+        if value < self.saldo:
+            self.saldo = (self.saldo - value) - self.tassa_prelievo
+            print(f'Withdrawal was successful and the balance is {self.saldo}€')
         else:
-            print(f'Error, the balance is too low for withdraw that cipher, the balance is {self.__saldo}€')
+            print(f'Error, the balance is too low for withdraw that cipher, the balance is {self.saldo}€')
 
 
 class ContoSpecial (Conto):
 
     data_inizio_debito = None
     tassa_prelievo = 2.00
+    interessi = 1.20
+    interessi_totali = 0
+    negative_day = 0
 
     def __init__(self, numero_conto, cliente, bilancio_conto, saldo=0):
         super().__init__(numero_conto, cliente, bilancio_conto, saldo)
 
 
     def take_money (self, value):
-        self.__saldo = (self.__saldo - value) - self.tassa_prelievo
-        print(f'Withdrawal was successful and the balance is {self.__saldo}€')
+        self.saldo = (self.saldo - value) - self.tassa_prelievo
+        print(f'Withdrawal was successful and the balance is {self.saldo}€')
         
-        if self.__saldo < 0 and self.data_inizio_debito == None:
-                self.data_inizio_debito = datetime.now()
-                print(f'ATTENTION: Your balance has gone negative!')        
+        if self.saldo < 0 and self.data_inizio_debito == None:
+            self.negative_day += 1
+            self.data_inizio_debito = datetime.now()
+            dt_string1 = self.data_inizio_debito.strftime("%d/%m/%Y %H:%M:%S")
+            print("Start Date and Time =", dt_string1)
+            self.interessi += 1.20
+            print(f'ATTENTION: Your balance has gone negative!')        
 
 
     def pay_money(self, value): 
         super().pay_money(value)
-        if self.__saldo > 0 and self.data_inizio_debito != None:
-            self.data_inizio_debito = datetime.now()
-            print(f'CONGRATS: Your balance has gone positive!')   
+        if (self.saldo > 0 and self.data_inizio_debito != None):
+            self.data_fine_debito = datetime.now()
+            dt_string2 = self.data_fine_debito.strftime("%d/%m/%Y %H:%M:%S")
+            print("Finish Date and Time =", dt_string2)
+            print(f'CONGRATS: Your balance has gone positive!')
+            if self.data_inizio_debito == self.data_fine_debito:
+                self.interessi_totali = self.interessi * self.negative_day
+                print(f'The total interest to be paid are {self.interessi_totali}€')
      
     
